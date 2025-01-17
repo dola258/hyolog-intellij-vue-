@@ -27,14 +27,11 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청 시 Hello World를 출력한다.")
     void test() throws Exception {
-        // 글 제목
-        // 글 내용
 
         // expected
-        mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("title", "글 제목입니다")
-                        .param("content", "글 내용입니다. 하하하 ")
+        mockMvc.perform(post("/posts") // application/json
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": \"제목입니다\", \"content\": \"내용입니다\"}")
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello World")) // "Hello World2"라고 하면 PostController.java랑 다르기 때문에 오류 발생

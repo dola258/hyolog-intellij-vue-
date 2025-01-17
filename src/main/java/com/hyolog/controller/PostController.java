@@ -3,6 +3,7 @@ package com.hyolog.controller;
 import com.hyolog.request.PostCreate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class PostController {
 
     // 글 등록 (POST Method)
     @PostMapping("/posts")
-    public String post(PostCreate params) {
+    public String post(@RequestBody PostCreate params) {
         //System.out.println("title={}, content={}", title, content);
         log.info("params: {}", params.toString());
         return "Hello World";
