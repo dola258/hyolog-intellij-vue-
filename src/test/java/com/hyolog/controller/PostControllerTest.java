@@ -23,6 +23,7 @@ class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+
     @Test
     @DisplayName("/posts 요청 시 Hello World를 출력한다.")
     void test() throws Exception {
