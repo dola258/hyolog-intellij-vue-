@@ -23,18 +23,8 @@ public class PostController {
 
     // 글 등록 (POST Method)
     @PostMapping("/posts")
-    public Map<String, String> post(@RequestBody @Valid PostCreate params, BindingResult result) {
-        if(result.hasErrors()) {
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            FieldError firstFieldError = fieldErrors.get(0);
-            String fieldName = firstFieldError.getField(); // title
-            String errorMessage = firstFieldError.getDefaultMessage(); // 에러메세지
+    public Map<String, String> post(@RequestBody @Valid PostCreate params) {
 
-            Map<String,String> errorMap = new HashMap<>();
-            errorMap.put(fieldName, errorMessage);
-
-            return errorMap;
-        }
         return Map.of();
     }
 }
