@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 class rollerTest {
@@ -34,7 +33,7 @@ class rollerTest {
                         .content("{\"title\": \"제목입니다\", \"content\": \"내용입니다\"}")
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string("{}")) // "Hello World2"라고 하면 PostController.java랑 다르기 때문에 오류 발생
+                .andExpect(content().string("{}"))
                 .andDo(print());
     }
 
@@ -48,7 +47,7 @@ class rollerTest {
                         .content("{\"title\": null, \"content\": \"내용입니다\"}")
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string("Hello World"))
+                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요~")) // jsonPath의 title 값 검증(배열, 오브젝트도 가능하다)
                 .andDo(print());
     }
 }
