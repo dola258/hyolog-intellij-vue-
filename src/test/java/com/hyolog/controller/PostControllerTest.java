@@ -46,8 +46,9 @@ class rollerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\": null, \"content\": \"내용입니다\"}")
                 )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요~")) // jsonPath의 title 값 검증(배열, 오브젝트도 가능하다)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400")    )            // ErrorResponse 타입에 맞춰서 변경
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다.")) // ErrorResponse 타입에 맞춰서 변경
                 .andDo(print());
     }
 }
