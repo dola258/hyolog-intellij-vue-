@@ -1,7 +1,9 @@
 package com.hyolog.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
+import com.hyolog.request.PostCreate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class rollerTest {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,10 +48,18 @@ class rollerTest {
     @DisplayName("/posts 요청 시 Hello World를 출력한다.")
     void test() throws Exception {
 
+        // given
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다")
+                .content("내용입니다")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         // expected
         mockMvc.perform(post("/posts") // application/json
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": \"제목입니다\", \"content\": \"내용입니다\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("{}"))
@@ -56,10 +70,18 @@ class rollerTest {
     @DisplayName("/posts 요청 시 title 값은 필수다.")
     void test2() throws Exception {
 
+        // given
+        PostCreate request = PostCreate.builder()
+                .title(null)
+                .content("내용입니다")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         // expected
         mockMvc.perform(post("/posts") // application/json
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": null, \"content\": \"내용입니다\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400")    )            // ErrorResponse 타입에 맞춰서 변경
@@ -72,10 +94,18 @@ class rollerTest {
     @DisplayName("/posts 요청 시 DB에 값이 저장된다.")
     void test3() throws Exception {
 
+        // given
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다")
+                .content("내용입니다")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         // when
         mockMvc.perform(post("/posts") // application/json
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": \"제목입니다\", \"content\": \"내용입니다\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());

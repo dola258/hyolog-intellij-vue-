@@ -1,5 +1,6 @@
 package com.hyolog.controller;
 
+import com.hyolog.request.PostCreate;
 import com.hyolog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,12 @@ public class ExceptionController {
     @ResponseBody
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e){
 
-//            FieldError fieldError = e.getFieldError();
-//            String field = fieldError.getField();
-//            String message = fieldError.getDefaultMessage();
-        ErrorResponse response = new ErrorResponse("400", "잘못된 요청입니다.");
+        // given
+        ErrorResponse response = ErrorResponse.builder()
+                .code("400")
+                .message("잘못된 요청입니다.")
+                .build();
+
         for(FieldError fieldError : e.getFieldErrors()) {
             response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
         }
