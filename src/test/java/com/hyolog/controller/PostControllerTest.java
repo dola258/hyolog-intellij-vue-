@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -116,5 +117,28 @@ class rollerTest {
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다", post.getTitle());
         assertEquals("내용입니다", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 한건 조회")
+    void test4() throws Exception {
+        // given
+        Post requestPost = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+
+        postRepository.save(requestPost);
+
+        // expected(when + then)
+        mockMvc.perform(get("/posts/{postId}", requestPost.getId()) // application/json
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(requestPost.getId()))
+                .andExpect(jsonPath("$.title").value("foo"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
+
     }
 }

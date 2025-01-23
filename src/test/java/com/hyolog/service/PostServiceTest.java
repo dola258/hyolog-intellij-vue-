@@ -4,11 +4,13 @@ import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -19,6 +21,12 @@ class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void clean() {
+        // 각각의 테스트가 수행되기 전에 실행한다
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 작성")
@@ -38,5 +46,24 @@ class PostServiceTest {
         assertEquals("제목입니다", post.getTitle());
         assertEquals("내용입니다", post.getContent());
 
+    }
+
+    @Test
+    @DisplayName("글 한건 조회")
+    void test2() {
+        // given
+        Post requestPost = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost);
+
+        // when
+        Post post = postService.get(requestPost.getId());
+
+        // then
+        assertNotNull(post);
+        assertEquals("foo", post.getTitle());
+        assertEquals("bar", post.getContent());
     }
 }
