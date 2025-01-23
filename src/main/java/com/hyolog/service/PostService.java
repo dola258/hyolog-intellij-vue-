@@ -3,6 +3,7 @@ package com.hyolog.service;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,16 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(long id) {
+    public PostResponse get(long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
-        return post;
+        PostResponse postResponse = PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+
+        return postResponse;
     }
 }

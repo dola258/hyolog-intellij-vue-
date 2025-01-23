@@ -2,6 +2,7 @@ package com.hyolog.controller;
 
 import com.hyolog.domain.Post;
 import com.hyolog.request.PostCreate;
+import com.hyolog.response.PostResponse;
 import com.hyolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,11 @@ public class PostController {
     * */
 
     @GetMapping("posts/{postId}")
-    public Post get(@PathVariable(name = "postId") long id) {
-        Post post = postService.get(id);
-        return post;
+    public PostResponse get(@PathVariable(name = "postId") long id) {
+        PostResponse postResponse = postService.get(id);
+
+        // 응답클래스를 분리하세요(서비스 정책에 맞게)
+        return postResponse;
 
     }
 
