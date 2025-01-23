@@ -19,6 +19,4 @@ public class PostCreate {
         this.title = title;
         this.content = content;
     }
-
-
 }
