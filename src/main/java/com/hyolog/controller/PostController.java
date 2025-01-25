@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +26,6 @@ public class PostController {
         //        Client에서는 수신한 id를 글 조회 API를 통해서 데이터를 수신받음
         // case3. 응답 필요 없음 -> void로 작성(현재)
         postService.write(request);
-
     }
 
     /*
@@ -32,12 +33,19 @@ public class PostController {
     *   /posts/{postId} -> 글 한건 조회
     * */
 
-    @GetMapping("posts/{postId}")
-    public PostResponse get(@PathVariable(name = "postId") long id) {
-        PostResponse postResponse = postService.get(id);
-
+    // 단건 조회 API
+    @GetMapping("/posts/{postId}")
+    public PostResponse get(@PathVariable long postId) {
         // 응답클래스를 분리하세요(서비스 정책에 맞게)
-        return postResponse;
+        return postService.get(postId);
+
+    }
+
+    // 다건 조회 API
+    @GetMapping("/posts")
+    public List<PostResponse> get() {
+        // 응답클래스를 분리하세요(서비스 정책에 맞게)
+        return postService.getList();
 
     }
 

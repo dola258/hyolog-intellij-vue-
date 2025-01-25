@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -70,5 +72,31 @@ class PostServiceTest {
         assertNotNull(postResponse);
         assertEquals("foo", postResponse.getTitle());
         assertEquals("bar", postResponse.getContent());
+    }
+
+    @Test
+    @DisplayName("글 여러건 조회")
+    void test3() {
+        // given
+        postRepository.saveAll(List.of(
+                Post.builder()
+                        .title("foo1")
+                        .content("bar1")
+                        .build(),
+                Post.builder()
+                        .title("foo2")
+                        .content("bar2")
+                        .build()
+        ));
+
+        // 클라이언트 요구사항
+        //      -> json응답에서 title 값 길이를 최대 10글자로 해주세요
+
+
+        // when
+        List<PostResponse> postList = postService.getList();
+
+        // then
+        assertNotNull(postList);
     }
 }
