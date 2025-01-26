@@ -21,7 +21,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -150,28 +153,24 @@ class rollerTest {
     @DisplayName("글 여러건 조회")
     void test5() throws Exception {
         // given
-        Post requestPost1 = postRepository.save(Post.builder()
-                .title("title_1")
-                .content("content_1")
-                .build());
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("블로그 제목 - " + i)
+                        .content("블로그 내용 - " + i)
+                        .build())
+                .collect(Collectors.toList());
 
-        Post requestPost2 = postRepository.save(Post.builder()
-                .title("title_2")
-                .content("content_2")
-                .build());
+        postRepository.saveAll(requestPosts);
 
         // expected(when + then)
-        mockMvc.perform(get("/posts") // application/json
+        mockMvc.perform(get("/posts?page=1&sort=id,desc&size=5") // application/json
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(2))) // 길이 확인, is는 Matchers.is
-                .andExpect(jsonPath("$[0].id").value(requestPost1.getId()))         // 첫번째 오브젝트의 아이디
-                .andExpect(jsonPath("$[0].title").value("title_1"))     // 첫번째 오브젝트의 title
-                .andExpect(jsonPath("$[0].content").value("content_1")) // 첫번째 오브젝트의 content
-                .andExpect(jsonPath("$[1].id").value(requestPost2.getId()))         // 두번째 오브젝트의 아이디
-                .andExpect(jsonPath("$[1].title").value("title_2"))     // 두번째 오브젝트의 title
-                .andExpect(jsonPath("$[1].content").value("content_2")) // 두번째 오브젝트의 content
+                .andExpect(jsonPath("$.length()", Matchers.is(5)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
+                .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))
                 .andDo(print());
 
     }

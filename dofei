@@ -1,0 +1,101 @@
+[33mcommit 470087bffa20c2eed7903c954c598f3672214f26[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 25 20:32:40 2025 +0900
+
+    7. 게시글 조회(여러건)
+
+[33mcommit a3403f9a1b0252afa6952c459bc16f4c7b984298[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Thu Jan 23 19:39:19 2025 +0900
+
+    6-1. 응답클래스 분리
+
+[33mcommit f009f3b2637b0810f76381baba83b07059ae3009[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Thu Jan 23 10:18:35 2025 +0900
+
+    6. 게시글 조회(1건)
+
+[33mcommit 357981deef521c10de81e7d28472a7c5674517ce[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Thu Jan 23 09:12:07 2025 +0900
+
+    5-2. Service Test 생성
+
+[33mcommit 41116ef19e096d2a46929324108c48eee44386ff[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Mon Jan 20 12:54:01 2025 +0900
+
+    5-1. @Builder 사용
+
+[33mcommit 740c04379eac75f2c17a07b62561e3320cd7b042[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sun Jan 19 16:54:16 2025 +0900
+
+    5. 게시글 저장
+
+[33mcommit 7a0a904f1b4899cc940a8649e66ea360d311f95a[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 18 21:10:35 2025 +0900
+
+    4-5. 데이터검증-2(validation)
+
+[33mcommit bbe0e8bb1554f7ae25fae230ef08a8db6c092645[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 18 20:54:31 2025 +0900
+
+    4-4. 더이터검증-2(응답컨트롤러 생성)
+
+[33mcommit ea795e200a4c02697053f4ee57ad856bfafbdd99[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 18 20:32:17 2025 +0900
+
+    4-3. 데이터검증-2(@ContollerAdvice)
+
+[33mcommit c5c455d503ed3c6f2ee20f30ddbcfae3da7c6d34[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 18 09:16:22 2025 +0900
+
+    4-2. 데이터검증-1(jsonPath)
+
+[33mcommit 9125af282b15e0ff323380cf58fc61c49cb86b49[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Sat Jan 18 09:08:54 2025 +0900
+
+    4-1. 데이터검증-1(@NotBlank)
+
+[33mcommit 71ae30de053aa050143a9305638ebbb5ae06feaa[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Fri Jan 17 14:23:00 2025 +0900
+
+    3-3. JSON으로 변경해서 POST 전송
+
+[33mcommit 5cf2590518c511839c2007713be15173a3f24493[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Fri Jan 17 14:05:44 2025 +0900
+
+    3-3. 데이터 형태 클래스 만들기, Setter
+
+[33mcommit 7cbd6ec19fd6792f2f60b4c981e8a5e062abec13[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Fri Jan 17 13:50:04 2025 +0900
+
+    3-2. Map 오브젝트로 파라미터 받기
+
+[33mcommit a852ccc6850e16e71ac1d799cd7f26e55468cd04[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Fri Jan 17 13:44:21 2025 +0900
+
+    3-1. POST 전송, application/x-www-form-urlencoded 테스트
+
+[33mcommit eec3507ff17e90e8ff051b1785793cb1b683031e[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Thu Jan 16 20:35:56 2025 +0900
+
+    2. 컨트롤러 생성과 MockMvc 테스트
+
+[33mcommit 091148ba6f9352177502be3a5844d737ab8e4d99[m
+Author: 이효빈 <dola258@naver.com>
+Date:   Thu Jan 16 19:49:43 2025 +0900
+
+    1. 프로젝트 생성

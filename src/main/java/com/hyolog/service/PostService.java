@@ -6,6 +6,9 @@ import com.hyolog.request.PostCreate;
 import com.hyolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +43,11 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList() {
-        return postRepository.findAll().stream()
+    public List<PostResponse> getList(Pageable pageable) {
+        // 수동
+        // Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "id" ));
+
+        return postRepository.findAll(pageable).stream()
                 // .map(post -> new PostResponse(post))
                 .map(PostResponse::new) // post를 PostResponse로 컨버팅
                 .collect(Collectors.toList());

@@ -7,6 +7,9 @@ import com.hyolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,15 +41,20 @@ public class PostController {
     public PostResponse get(@PathVariable long postId) {
         // 응답클래스를 분리하세요(서비스 정책에 맞게)
         return postService.get(postId);
-
     }
+
+    // 글이 너무 많은 경우 -> 비용이 너무 많이 든다
+    // 글 100,000,000를 DB에서 조회하는 경우 -> DB가 뻗을 수 있다
+    // DB -> 애플리케이션 서버로 전달하는 시간, 트래픽비용 등이 많이 발생할 수 있다
 
     // 다건 조회 API
     @GetMapping("/posts")
-    public List<PostResponse> get() {
+    public List<PostResponse> get(Pageable pageable) {
         // 응답클래스를 분리하세요(서비스 정책에 맞게)
-        return postService.getList();
-
+        return postService.getList(pageable);
     }
+
+
+
 
 }
