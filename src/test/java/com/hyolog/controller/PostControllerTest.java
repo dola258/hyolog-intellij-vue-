@@ -163,11 +163,37 @@ class rollerTest {
         postRepository.saveAll(requestPosts);
 
         // expected(when + then)
-        mockMvc.perform(get("/posts?page=1&sort=id,desc&size=5") // application/json
+        mockMvc.perform(get("/posts?page=1&size=10") // application/json
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(5)))
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
+                .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("글 페이지번호 0을 넘겨도 첫 페이지가 나와야한다")
+    void test6() throws Exception {
+        // given
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("블로그 제목 - " + i)
+                        .content("블로그 내용 - " + i)
+                        .build())
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPosts);
+
+        // expected(when + then)
+        mockMvc.perform(get("/posts?page=0&size=10") // application/json
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andExpect(jsonPath("$[0].id").value(30))
                 .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
                 .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))

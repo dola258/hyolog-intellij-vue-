@@ -2,6 +2,7 @@ package com.hyolog.controller;
 
 import com.hyolog.domain.Post;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
 import com.hyolog.service.PostService;
 import jakarta.validation.Valid;
@@ -49,9 +50,9 @@ public class PostController {
 
     // 다건 조회 API
     @GetMapping("/posts")
-    public List<PostResponse> get(Pageable pageable) {
+    public List<PostResponse> get(@ModelAttribute PostSearch postSearch) {
         // 응답클래스를 분리하세요(서비스 정책에 맞게)
-        return postService.getList(pageable);
+        return postService.getList(postSearch);
     }
 
 

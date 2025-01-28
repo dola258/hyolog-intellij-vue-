@@ -3,6 +3,7 @@ package com.hyolog.service;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,11 +44,11 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList(Pageable pageable) {
+    public List<PostResponse> getList(PostSearch postSearch) {
         // 수동
         // Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "id" ));
 
-        return postRepository.findAll(pageable).stream()
+        return postRepository.getList(postSearch).stream()
                 // .map(post -> new PostResponse(post))
                 .map(PostResponse::new) // post를 PostResponse로 컨버팅
                 .collect(Collectors.toList());

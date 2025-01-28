@@ -3,6 +3,7 @@ package com.hyolog.service;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,13 +95,16 @@ class PostServiceTest {
         postRepository.saveAll(requestPosts);
 
         // when
-        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "id" );
-        List<PostResponse> postList = postService.getList(pageable);
+        // Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "id" );
+        PostSearch postSearch = PostSearch.builder()
+                .page(1)
+                .build();
+
+        List<PostResponse> postList = postService.getList(postSearch);
 
         // then
-        assertEquals(5L, postList.size());
+        assertEquals(10L, postList.size());
         assertEquals(postList.get(0).getTitle(), "블로그 제목 - 30");
-        assertEquals(postList.get(4).getTitle(), "블로그 제목 - 26");
 
     }
 }

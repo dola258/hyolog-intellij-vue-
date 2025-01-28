@@ -25,6 +25,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web:3.3.1'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// <querydsl>
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	// </querydsl>
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
