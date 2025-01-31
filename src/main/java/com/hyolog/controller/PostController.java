@@ -2,6 +2,7 @@ package com.hyolog.controller;
 
 import com.hyolog.domain.Post;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostEdit;
 import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
 import com.hyolog.service.PostService;
@@ -55,7 +56,11 @@ public class PostController {
         return postService.getList(postSearch);
     }
 
-
+    // 게시글 수정
+    @PatchMapping("/posts/{postId}")
+    public PostResponse edit(@PathVariable long postId, @RequestBody @Valid PostEdit postEdit) {
+        return postService.edit(postId, postEdit);
+    }
 
 
 }

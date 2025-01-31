@@ -1,10 +1,13 @@
 package com.hyolog.service;
 
 import com.hyolog.domain.Post;
+import com.hyolog.domain.PostEditor;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostEdit;
 import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -53,5 +56,21 @@ public class PostService {
                 .map(PostResponse::new) // post를 PostResponse로 컨버팅
                 .collect(Collectors.toList());
 
+    }
+
+    @Transactional
+    public PostResponse edit(Long id, PostEdit postEdit) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+
+        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+        post.edit(postEditor);
+
+        return new PostResponse(post);
     }
 }

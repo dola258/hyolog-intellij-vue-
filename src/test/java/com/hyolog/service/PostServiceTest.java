@@ -3,6 +3,7 @@ package com.hyolog.service;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostEdit;
 import com.hyolog.request.PostSearch;
 import com.hyolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
@@ -106,5 +107,81 @@ class PostServiceTest {
         assertEquals(10L, postList.size());
         assertEquals(postList.get(0).getTitle(), "블로그 제목 - 30");
 
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                        .title("수정된 제목인데")
+                        .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id="+post.getId()));
+        assertEquals("수정된 제목인데", changePost.getTitle());
+
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("수정된 제목인데")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id="+post.getId()));
+        assertEquals("수정된 제목인데", changePost.getTitle());
+
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test6() {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("블로그 제목")
+                .content("쏼라쏼라 블로그")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id="+post.getId()));
+        assertEquals("블로그 제목", changePost.getTitle());
+        assertEquals("쏼라쏼라 블로그", changePost.getContent());
     }
 }

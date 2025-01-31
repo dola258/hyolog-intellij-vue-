@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
+import com.hyolog.request.PostEdit;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -197,6 +198,32 @@ class rollerTest {
                 .andExpect(jsonPath("$[0].id").value(30))
                 .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
                 .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test7() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("수정한 제목인데")
+                .content("블로그 내용")
+                .build();
+
+        // expected(when + then)
+        mockMvc.perform(patch("/posts/{postId}", post.getId()) // application/json
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit))
+                )
+                .andExpect(status().isOk())
                 .andDo(print());
 
     }
