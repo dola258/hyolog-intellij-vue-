@@ -2,6 +2,7 @@ package com.hyolog.service;
 
 import com.hyolog.domain.Post;
 import com.hyolog.domain.PostEditor;
+import com.hyolog.exception.PostNotFound;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
 import com.hyolog.request.PostEdit;
@@ -25,6 +26,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    // 게시글 작성
     public void write(PostCreate postCreate) {
         // postCreate -> Entity
 
@@ -36,9 +38,10 @@ public class PostService {
         postRepository.save(post);
     }
 
+    // 단건 조회
     public PostResponse get(long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+                .orElseThrow(PostNotFound::new); // () -> new PostNotFound()
 
         return PostResponse.builder()
                 .id(post.getId())
@@ -47,6 +50,7 @@ public class PostService {
                 .build();
     }
 
+    // 다건 조회
     public List<PostResponse> getList(PostSearch postSearch) {
         // 수동
         // Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "id" ));
@@ -58,10 +62,11 @@ public class PostService {
 
     }
 
+    // 게시글 수정
     @Transactional
     public PostResponse edit(Long id, PostEdit postEdit) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+                .orElseThrow(PostNotFound::new);
 
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
@@ -74,9 +79,10 @@ public class PostService {
         return new PostResponse(post);
     }
 
+    // 게시글 삭제
     public void delete(long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다"));
+                .orElseThrow(PostNotFound::new);
 
         postRepository.delete(post);
     }

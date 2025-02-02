@@ -1,6 +1,7 @@
 package com.hyolog.service;
 
 import com.hyolog.domain.Post;
+import com.hyolog.exception.PostNotFound;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
 import com.hyolog.request.PostEdit;
@@ -201,5 +202,60 @@ class PostServiceTest {
 
         // then
         Assertions.assertEquals(0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("글 한건 조회 - 존재하지 않는 글")
+    void test8() {
+        // given
+        Post requestPost = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost);
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+                postService.get(requestPost.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("글 삭제 - 조회하지 않는 글")
+    void test9() {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+            postService.delete(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("글 내용 수정 - 존재하지 않는 글")
+    void test10() {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("블로그 제목")
+                .content("쏼라쏼라 블로그")
+                .build();
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+            postService.edit(post.getId() + 1L, postEdit);
+        });
     }
 }

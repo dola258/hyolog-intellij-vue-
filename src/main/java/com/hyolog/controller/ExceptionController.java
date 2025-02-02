@@ -1,5 +1,6 @@
 package com.hyolog.controller;
 
+import com.hyolog.exception.PostNotFound;
 import com.hyolog.request.PostCreate;
 import com.hyolog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,20 @@ public class ExceptionController {
         for(FieldError fieldError : e.getFieldErrors()) {
             response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
         }
+
+        return response;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PostNotFound.class)
+    @ResponseBody
+    public ErrorResponse postNotFound(PostNotFound e){
+
+        // given
+        ErrorResponse response = ErrorResponse.builder()
+                .code("404")
+                .message(e.getMessage())
+                .build();
 
         return response;
     }

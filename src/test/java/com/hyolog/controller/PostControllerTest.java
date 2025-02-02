@@ -247,4 +247,45 @@ class rollerTest {
                 .andDo(print());
 
     }
+
+    @Test
+    @DisplayName("글 한건 조회 - 존재하지 않는 글")
+    void test9() throws Exception {
+        // expected(when + then)
+        mockMvc.perform(get("/posts/{postId}", 1L) // application/json
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("글 수정 - 존재하지 않는 글")
+    void test10() throws Exception {
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("수정한 제목인데")
+                .content("블로그 내용")
+                .build();
+
+        // expected(when + then)
+        mockMvc.perform(patch("/posts/{postId}", 1L) // application/json
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit))
+                )
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("글 삭제 - 존재하지 않는 글")
+    void test11() throws Exception {
+           // expected(when + then)
+        mockMvc.perform(delete("/posts/{postId}", 1L) // application/json
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
 }
