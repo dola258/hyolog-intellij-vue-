@@ -29,7 +29,6 @@ public class PostService {
     // 게시글 작성
     public void write(PostCreate postCreate) {
         // postCreate -> Entity
-
         Post post = Post.builder()
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())

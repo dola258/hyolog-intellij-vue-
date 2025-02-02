@@ -288,4 +288,27 @@ class rollerTest {
                 .andDo(print());
 
     }
+
+    @Test
+    @DisplayName("글 작성 - 허용되지 않은 단어")
+    void test12() throws Exception {
+
+        // given
+        PostCreate request = PostCreate.builder()
+                .title("나는 바보입니다.")
+                .content("내용입니다")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        // when
+        mockMvc.perform(post("/posts") // application/json
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
+
 }

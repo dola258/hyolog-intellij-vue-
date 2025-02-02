@@ -1,6 +1,7 @@
 package com.hyolog.controller;
 
 import com.hyolog.domain.Post;
+import com.hyolog.exception.InvalidRequest;
 import com.hyolog.request.PostCreate;
 import com.hyolog.request.PostEdit;
 import com.hyolog.request.PostSearch;
@@ -26,6 +27,12 @@ public class PostController {
     // 글 등록 (POST Method)
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
+        // 허용하지 않은 단어
+        if(request.getTitle().contains("바보")) {
+            throw new InvalidRequest();
+        }
+
+
         // case1. 저장한 데이터 Entity -> response로 응답
         // case2. 저장한 데이터의 primary_id만 -> response로 응답
         //        Client에서는 수신한 id를 글 조회 API를 통해서 데이터를 수신받음
