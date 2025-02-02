@@ -1,6 +1,13 @@
 package com.hyolog.exception;
 
-public class InvalidRequest extends RuntimeException{
+/*
+*   status - 400
+* */
+
+import lombok.Data;
+
+@Data
+public class InvalidRequest extends HyologException{
 
     private static final String MESSAGE = "잘못된 요청입니다.";
 
@@ -8,4 +15,13 @@ public class InvalidRequest extends RuntimeException{
         super(MESSAGE);
     }
 
+    public InvalidRequest(String filedName, String message) {
+        super(MESSAGE);
+        addvalidation(filedName, message);
+    }
+
+    @Override
+    public int getStatusCode() {
+        return 400;
+    }
 }

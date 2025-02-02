@@ -1,6 +1,5 @@
 package com.hyolog.controller;
 
-import com.hyolog.domain.Post;
 import com.hyolog.exception.InvalidRequest;
 import com.hyolog.request.PostCreate;
 import com.hyolog.request.PostEdit;
@@ -10,9 +9,6 @@ import com.hyolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +23,7 @@ public class PostController {
     // 글 등록 (POST Method)
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
-        // 허용하지 않은 단어
-        if(request.getTitle().contains("바보")) {
-            throw new InvalidRequest();
-        }
-
+        request.validate();
 
         // case1. 저장한 데이터 Entity -> response로 응답
         // case2. 저장한 데이터의 primary_id만 -> response로 응답

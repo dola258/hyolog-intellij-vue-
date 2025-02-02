@@ -1,11 +1,12 @@
 package com.hyolog.controller;
 
+import com.hyolog.exception.HyologException;
 import com.hyolog.exception.InvalidRequest;
 import com.hyolog.exception.PostNotFound;
-import com.hyolog.request.PostCreate;
 import com.hyolog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,9 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 @ControllerAdvice
 public class ExceptionController {
@@ -24,7 +22,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST) // 응답코드 400
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e){
+    public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e) {
 
         // given
         ErrorResponse response = ErrorResponse.builder()
@@ -32,39 +30,29 @@ public class ExceptionController {
                 .message("잘못된 요청입니다.")
                 .build();
 
-        for(FieldError fieldError : e.getFieldErrors()) {
+        for (FieldError fieldError : e.getFieldErrors()) {
             response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
         return response;
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(PostNotFound.class)
+    @ExceptionHandler(HyologException.class)
     @ResponseBody
-    public ErrorResponse postNotFound(PostNotFound e){
+    public ResponseEntity<ErrorResponse> hyologExcption(HyologException e) {
+        // Exception 종류에 따라서 code와 message를 변경해야 한다
+        int statusCode = e.getStatusCode();
 
-        // given
         ErrorResponse response = ErrorResponse.builder()
-                .code("404")
+                .code(String.valueOf(statusCode))
                 .message(e.getMessage())
+                .validation(e.validation)
                 .build();
 
-        return response;
-    }
+        ResponseEntity<ErrorResponse> returnResponse = ResponseEntity.status(statusCode)
+                .body(response);
 
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidRequest.class)
-    @ResponseBody
-    public ErrorResponse invalidRequest(InvalidRequest e){
-
-        // given
-        ErrorResponse response = ErrorResponse.builder()
-                .code("404")
-                .message(e.getMessage())
-                .build();
-
-        return response;
+        return returnResponse;
     }
 }
+
