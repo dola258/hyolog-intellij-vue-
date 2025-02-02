@@ -227,4 +227,24 @@ class rollerTest {
                 .andDo(print());
 
     }
+
+    @Test
+    @DisplayName("글 삭제")
+    void test8() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("블로그 제목")
+                .content("블로그 내용")
+                .build();
+
+        postRepository.save(post);
+
+        // expected(when + then)
+        mockMvc.perform(delete("/posts/{postId}", post.getId()) // application/json
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
 }
