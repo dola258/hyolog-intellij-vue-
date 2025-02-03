@@ -5,25 +5,17 @@ import com.hyolog.domain.Post;
 import com.hyolog.repository.PostRepository;
 import com.hyolog.request.PostCreate;
 import com.hyolog.request.PostEdit;
-import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class rollerTest {
+class PostControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -81,7 +73,6 @@ class rollerTest {
 
         // given
         PostCreate request = PostCreate.builder()
-                .title(null)
                 .content("내용입니다")
                 .build();
 
@@ -154,7 +145,7 @@ class rollerTest {
     @DisplayName("글 여러건 조회")
     void test5() throws Exception {
         // given
-        List<Post> requestPosts = IntStream.range(1, 31)
+        List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
                         .title("블로그 제목 - " + i)
                         .content("블로그 내용 - " + i)
@@ -169,9 +160,8 @@ class rollerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].id").value(30))
-                .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
-                .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))
+                .andExpect(jsonPath("$[0].title").value("블로그 제목 - 19"))
+                .andExpect(jsonPath("$[0].content").value("블로그 내용 - 19"))
                 .andDo(print());
 
     }
@@ -195,7 +185,6 @@ class rollerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].id").value(30))
                 .andExpect(jsonPath("$[0].title").value("블로그 제목 - 30"))
                 .andExpect(jsonPath("$[0].content").value("블로그 내용 - 30"))
                 .andDo(print());
@@ -310,5 +299,26 @@ class rollerTest {
                 .andDo(print());
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.1'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.hyolog'
@@ -13,8 +14,17 @@ java {
 	}
 }
 
+configurations {
+	asciidoctorExt
+}
+
 repositories {
 	mavenCentral()
+}
+
+ext {
+	asciidocVersion = '3.0.3'
+	snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -40,8 +50,39 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.h2database:h2'
+
+	// <Spring Rest Docs>
+	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${asciidocVersion}"
+	testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${asciidocVersion}"
+	// </Spring Rest Docs>
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+
+	copy {
+		from asciidoctor.outputDir
+		into "src/main/resources/static/docs"
+	}
+	/* 경로에 안만들어짐!
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+	*/
+
+}
+

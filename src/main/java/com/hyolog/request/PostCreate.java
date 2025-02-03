@@ -26,5 +26,6 @@ public class PostCreate {
         if(title.contains("바보")) {
             throw new InvalidRequest("title", "제목에 부적잘한 단어가 포함되어 있습니다.");
         }
+
     }
 }

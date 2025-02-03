@@ -5,8 +5,9 @@ package com.hyolog.exception;
 * */
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class InvalidRequest extends HyologException{
 
     private static final String MESSAGE = "잘못된 요청입니다.";
