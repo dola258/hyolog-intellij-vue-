@@ -1,6 +1,31 @@
-include::{snippets}/index/curl-request.adoc[]
-include::{snippets}/index/http-request.adoc[]
-include::{snippets}/index/http-response.adoc[]
-include::{snippets}/index/httpie-request.adoc[]
-include::{snippets}/index/request-body.adoc[]
-include::{snippets}/index/response-body.adoc[]
+= 내 블로그 API
+:toc:
+
+== 게시글 단건 조회
+
+== 요청
+include::{snippets}/post-select/http-request.adoc[]
+
+include::{snippets}/post-select/path-parameters.adoc[]
+
+== 응답
+include::{snippets}/post-select/http-response.adoc[]
+
+include::{snippets}/post-select/response-fields.adoc[]
+
+== 글 등록
+
+== 요청
+include::{snippets}/post-create/http-request.adoc[]
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+== 응답
+include::{snippets}/post-create/http-response.adoc[]
+
+== 요청 body
+include::{snippets}/post-create/request-body.adoc[]
+
+== 응답 body
+include::{snippets}/post-create/response-body.adoc[]
+
